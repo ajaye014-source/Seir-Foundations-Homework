@@ -1,0 +1,31 @@
+# Homework Notes — Lesson 2: Slack Alerting
+
+## Experiments
+- Experiment 1 Prediction vs. Actual:
+  - Prediction: 1 out of 4 alerts will arrive.
+  - Actual: Exactly 1 alert arrived (CRITICAL). Setting SLACK_ALERT_SEVERITY=CRITICAL filters out lower severities (INFO, WARNING, ERROR).
+- Experiment 2 (Kill Switch):
+  - Setting SLACK_ALERTS_ENABLED=false blocked all messages from sending. A kill switch is vital during planned maintenance windows so engineers don't trigger false alarms while taking systems offline.
+- Experiment 3 (Threshold Modification):
+  - Lowering the WARNING threshold from 75% to 20% caused hw4_disk_watch.py to evaluate my current disk usage (25.7%) as a WARNING instead of INFO.
+
+## Script Questions
+- hw2_severity_tour.py:
+  - Which severities arrived, and why those?
+  - All four severities (INFO, WARNING, ERROR, CRITICAL) arrived because SLACK_ALERT_SEVERITY=INFO allows INFO and all higher-level alerts to pass through.
+
+- hw3_server_time.py:
+  - How many hours apart are server time and your wall clock?
+  - The server runs on UTC (04:25 UTC). My local wall clock (EST) is 5 hours behind server time.
+
+- hw4_disk_watch.py:
+  - Why is a quiet INFO here good design, not a failure?
+  - Routine INFO logs confirm the system check ran successfully without causing "alert fatigue" or spamming engineers with unnecessary notifications during normal operations.
+
+- hw5_load_check.py:
+  - What would make this number spike on the Balerica bank?
+  - A massive spike in customer transactions (e.g., payday morning traffic), intensive database background jobs, or a malicious DDoS attack targeting CPU resources.
+
+- hw6_incident_drill.py:
+  - Which fake incident deserves to wake a human at 3 AM?
+  - A CRITICAL severity incident, such as a complete database failure or corrupted ledger unreachable error, because it halts core bank operations and requires immediate manual intervention.
